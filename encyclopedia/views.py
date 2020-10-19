@@ -1,6 +1,7 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseNotFound
 from markdown2 import Markdown
+from django.http import Http404
 
 from . import util
 
@@ -16,7 +17,10 @@ def new(request):
     })
 
 def entry(request, entry):
-    return render(request, f"encyclopedia/entry.html", {
-        "entry": markdowner.convert(util.get_entry(entry))
-    })
-    #return HttpResponse(markdowner.convert(util.get_entry(entry)))
+    e = util.get_entry(entry)
+    if  e is None:
+        return HttpResponseNotFound('<h1>Page not found</h1>')
+    else:
+        return render(request, f"encyclopedia/entry.html", {
+            "entry": markdowner.convert(e)
+        })
