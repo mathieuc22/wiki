@@ -15,7 +15,7 @@ def index(request):
 def new(request):
     if request.method == "POST":
         t = request.POST['title']
-        c = f"# {t} \n \n {request.POST['entry']}"
+        c = f"# {t}\n\n{request.POST['entry']}"
         e = util.get_entry(t)
         if  e is None:
             util.save_entry(t, c)
@@ -28,6 +28,26 @@ def new(request):
         "msg": msg
     })
 
+def edit(request, entry):
+    e = util.get_entry(entry)
+    if  e is None:
+        return render(request, "encyclopedia/404.html", {
+        })
+    else:
+        if request.method == "POST":
+            t = entry
+            c = f"# {t}\n\n{request.POST['entry']}"
+            util.save_entry(t, c)
+            msg = f"entry {t} saved"
+            return HttpResponseRedirect(f"/wiki/{entry}")
+        else:
+            msg = ""
+            return render(request, f"encyclopedia/edit.html", {
+                "entry": entry,
+                "content": e.split("\n",2)[2],
+                "msg": msg
+            })
+
 def entry(request, entry):
     e = util.get_entry(entry)
     if  e is None:
@@ -35,7 +55,8 @@ def entry(request, entry):
         })
     else:
         return render(request, f"encyclopedia/entry.html", {
-            "entry": markdowner.convert(e)
+            "entry": entry,
+            "content": markdowner.convert(e.split("\n",2)[2])
         })
 
 def search(request):
