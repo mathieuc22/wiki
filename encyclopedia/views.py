@@ -13,7 +13,19 @@ def index(request):
     })
 
 def new(request):
+    if request.method == "POST":
+        t = request.POST['title']
+        c = f"# {t} \n \n {request.POST['entry']}"
+        e = util.get_entry(t)
+        if  e is None:
+            util.save_entry(t, c)
+            msg = f"entry {t} saved"
+        else:
+            msg = f"entry {t} already exists"
+    else:
+        msg = ""
     return render(request, "encyclopedia/new.html", {
+        "msg": msg
     })
 
 def entry(request, entry):
