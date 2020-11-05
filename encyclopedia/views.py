@@ -5,6 +5,8 @@ from django.http import Http404
 
 from . import util
 
+import random
+
 markdowner = Markdown()
 
 def index(request):
@@ -74,3 +76,7 @@ def search(request):
             })
     else:
         return HttpResponseRedirect("/")
+
+def randomentry(request):
+    entry = random.choice(util.list_entries())
+    return HttpResponseRedirect(f"/wiki/{entry}")
