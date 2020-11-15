@@ -6,16 +6,20 @@
 
 {% block body %}
     <h1>New Page</h1>
-    <p>{{ msg }}</p>
+    {% if msg %}
+        <div class="alert alert-{{ msgtype }}" role="alert">{{ msg }}</div>
+    {% endif %}
     <form action="{% url 'new'%}" method="post">
         {% csrf_token %}
         <div class="form-group">
-            <label for="title">Example title</label>
-            <input  type="text" class="form-control" id="title" placeholder="Example title" name="title">
+            <label for="title">Title</label>
+            <input  type="text" class="form-control" id="title" placeholder="Example title" name="title" required>
+            <small id="titleHelp" class="form-text text-muted">Please give a title for your new entry.</small>
         </div>
         <div class="form-group">
-            <label for="entry">Entry (markdown allowed)</label>
-            <textarea class="form-control" id="entry" name="entry" rows="3"></textarea>
+            <label for="entry">Content</label>
+            <textarea class="form-control" id="entry" placeholder="Example content" name="entry" rows="3"></textarea>
+            <small id="entryHelp" class="form-text text-muted">You can use Markdown syntax for formatting.</small>
         </div>
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>

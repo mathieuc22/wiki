@@ -5,13 +5,16 @@
 {% endblock %}
 
 {% block body %}
-    <h1>Edit {{ entry }}</h1>
-    <p>{{ msg }}</p>
+    <h1>Edit: {{ entry }}</h1>
+    {% if msg %}
+        <div class="alert alert-success" role="alert">{{ msg }}</div>
+    {% endif %}
     <form action="{% url 'edit' entry %}" method="post">
         {% csrf_token %}
         <div class="form-group">
-            <label for="entry">Entry (markdown allowed)</label>
-            <textarea class="form-control" id="entry" name="entry" rows="3" cols="20">{{ content }}</textarea>
+            <label for="entry">Content</label>
+            <textarea class="form-control" id="entry" name="entry" rows="8" cols="20">{{ content }}</textarea>
+            <small id="entryHelp" class="form-text text-muted">You can use Markdown syntax for formatting.</small>
         </div>
         <button type="submit" class="btn btn-primary">Save</button>
     </form>

@@ -5,8 +5,11 @@
 {% endblock %}
 
 {% block body %}
+    <a href="{% url 'edit' entry %}">Edit page</a>
     <h1>{{ entry }}</h1>
-    <a href="{% url 'edit' entry %}">Edit entry</a>
+    {% if msg %}
+        <div class="alert alert-{{ msgtype }}" role="alert">{{ msg }}</div>
+    {% endif %}
     {{ content|safe }}
 
 {% endblock %}
